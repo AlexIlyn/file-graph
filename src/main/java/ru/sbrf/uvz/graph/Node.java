@@ -5,33 +5,48 @@ import java.util.ArrayList;
 public class Node {
 
     private ArrayList<Edge> neighborhood;
-    private String label;
+    private SubCaseType subCaseType;
+    private Graph graph;
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public SubCaseType getSubCaseType() {
+        return subCaseType;
+    }
+
+    public void setSubCaseType(SubCaseType subCaseType) {
+        this.subCaseType = subCaseType;
+    }
 
     /**
      *
-     * @param label The unique label associated with this Node
+     * @param subCaseType The unique label associated with this Node
      */
-    public Node(String label){
-        this.label = label;
+    public Node(Graph graph, SubCaseType subCaseType){
+        this.subCaseType = subCaseType;
+        this.graph = graph;
         this.neighborhood = new ArrayList<Edge>();
     }
+
+
 
 
     /**
      * This method adds an Edge to the incidence neighborhood of this graph iff
      * the edge is not already present.
      *
-     * @param edge The edge to add
+     * @param node The node to add as depandent
      */
-    public Node addNeighbor(Edge edge){
-        if(this.neighborhood.contains(edge)){
-            return this;
+    public Node addDependent(Node node){
+        for (Edge edge : neighborhood){
+            if(edge.getEnd().equals(node)) return edge.getEnd();
         }
-
+        Edge edge = new Edge(this, node);
         this.neighborhood.add(edge);
-        return this;
+        return node;
     }
-
 
     /**
      *
@@ -83,8 +98,8 @@ public class Node {
      *
      * @return String The label of this Node
      */
-    public String getLabel(){
-        return this.label;
+    public SubCaseType getLabel(){
+        return this.subCaseType;
     }
 
 
@@ -93,7 +108,7 @@ public class Node {
      * @return String A String representation of this Node
      */
     public String toString(){
-        return "Node " + label;
+        return "Node " + subCaseType.name();
     }
 
     /**
@@ -101,7 +116,7 @@ public class Node {
      * @return The hash code of this Node's label
      */
     public int hashCode(){
-        return this.label.hashCode();
+        return this.subCaseType.hashCode();
     }
 
     /**
@@ -114,8 +129,8 @@ public class Node {
             return false;
         }
 
-        Node v = (Node)other;
-        return this.label.equals(v.label);
+        Node node = (Node)other;
+        return this.subCaseType.equals(node.subCaseType);
     }
 
     /**

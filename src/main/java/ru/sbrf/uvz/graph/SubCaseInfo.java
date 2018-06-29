@@ -15,6 +15,10 @@ public class SubCaseInfo {
 
     private SubCaseType subCaseType;
 
+    public SubCaseType getSubCaseType() {
+        return subCaseType;
+    }
+
     private String fileUrl;
 
     public boolean isValid() {
