@@ -1,6 +1,7 @@
 package ru.sbrf.uvz.graph;
 
 
+import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 public class SubCaseInfo {
@@ -13,16 +14,19 @@ public class SubCaseInfo {
         this.subCaseType = subCaseType;
     }
 
+    @Getter
     private SubCaseType subCaseType;
-
-    public SubCaseType getSubCaseType() {
-        return subCaseType;
-    }
-
+    @Getter
     private String fileUrl;
 
     public boolean isValid() {
         return StringUtils.hasText(fileUrl) && subCaseType != null;
     }
 
+    @Override
+    public String toString() {
+        return "\nSubCase{" +
+                "type=" + subCaseType +
+                '}';
+    }
 }

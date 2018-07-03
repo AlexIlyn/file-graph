@@ -19,12 +19,12 @@ public class GraphBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (Node node : graph.getNodes()) {
-            System.out.println(node);
-            for (Edge edge : node.getNeighbors()) {
-                System.out.println(edge);
-            }
-        }
+//        for (Node node : graph.getNodes()) {
+//            System.out.println(node);
+//            for (Edge edge : node.getNeighbors()) {
+//                System.out.println(edge);
+//            }
+//        }
         return graph;
     }
 
