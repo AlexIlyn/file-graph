@@ -21,8 +21,8 @@ public class GraphTest {
         subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_DOCS));
         subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CLIENT));
         subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_AGR_D));
-        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
-        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
+//        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
+//        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
 //        SAPBO_CUST > SAPBO_CLIENT > SAPBO_DOCS
 //        SAPBO_CUST > SAPBO_AGR_D
 
@@ -30,16 +30,14 @@ public class GraphTest {
         var graph = graphBuilder.buildFromFile("graphdata");
 
         System.out.println("---------------------------------------------------------");
-        graph.getSingleSubCaseTypes(subCaseList).forEach(c -> System.out.println(c));
+        graph.getSingleSubCaseTypes(subCaseList).forEach(System.out::println);
         System.out.println("---------------------------------------------------------");
-        graph.getSubCasesContentInGraph(subCaseList).forEach(c -> System.out.println(c));
+        graph.getSubCasesContentInGraph(subCaseList).forEach(System.out::println);
         System.out.println("---------------------------------------------------------");
-        graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).forEach(c -> System.out.println(c));
-//        System.out.println("---------------------------------------------------------");
-//        System.out.println(graph.getSubcaseDependentsVertical(subCaseList, graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).get(0)));
+        graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).forEach(System.out::println);
         System.out.println("---------------------------------------------------------");
         System.out.println(graph.getSubcaseDependentsHorizontal(subCaseList, graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).get(0)));
         System.out.println("---------------------------------------------------------");
-        graph.getLinkedSubCaseTypes(subCaseList).forEach(c -> System.out.println(c));
+        graph.getLinkedSubCaseTypes(subCaseList).forEach(System.out::println);
     }
 }

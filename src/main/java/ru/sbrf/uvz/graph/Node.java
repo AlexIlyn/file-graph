@@ -11,11 +11,11 @@ import java.util.Objects;
 public class Node {
 
     private ArrayList<Edge> neighborhood;
-    private @Getter
-    final SubCaseType key;
-    private @Getter
+    @Getter
+    private final SubCaseType key;
+    @Getter
     @Setter
-    Graph graph;
+    private Graph graph;
 
     /**
      * @param key The unique key associated with this Node
@@ -36,6 +36,14 @@ public class Node {
         List<Node> result = new ArrayList<>();
         neighborhood.forEach(e -> {
             if (e.getStart() == this) result.add(e.getEnd());
+        });
+        return result;
+    }
+
+    public List<Node> getParentNodes() {
+        List<Node> result = new ArrayList<>();
+        neighborhood.forEach(e -> {
+            if (e.getEnd() == this) result.add(e.getStart());
         });
         return result;
     }
@@ -63,6 +71,7 @@ public class Node {
         this.neighborhood.add(edge);
 
     }
+
     /**
      * @return String A String representation of this Node
      */

@@ -12,7 +12,7 @@ public class Edge {
      * @param start The first node in the Edge
      * @param end The second vertex of the Edge
      */
-    public Edge(Node start, Node end){
+    Edge(Node start, Node end) {
         this.start = start;
         this.end = end;
     }
