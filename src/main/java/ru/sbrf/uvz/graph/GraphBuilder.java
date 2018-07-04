@@ -1,16 +1,36 @@
 package ru.sbrf.uvz.graph;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphBuilder {
+
+    public Graph buildFromString(String configuration) {
+        Graph graph = null;
+        try (Reader reader = new StringReader(configuration)) {
+            graph = buildFromReader(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return graph;
+
+    }
+
     public Graph buildFromFile(String path) {
+        Graph graph = null;
+        try (Reader reader = new FileReader(Paths.get(path).toFile())) {
+            graph = buildFromReader(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return graph;
+    }
+
+    private Graph buildFromReader(Reader reader) {
         Graph graph = new Graph();
-        try (BufferedReader inputReader = new BufferedReader(new FileReader(Paths.get(path).toFile()))) {
+        try (BufferedReader inputReader = new BufferedReader(reader)) {
             for (String line = inputReader.readLine(); line != null; line = inputReader.readLine()) {
                 if (line.isEmpty() || line.charAt(0) == '#') continue;
                 System.out.println(line);
@@ -65,4 +85,19 @@ public class GraphBuilder {
         }
         return subCaseTypeList;
     }
+    //    public Graph buildFromFile(String path) {
+//        Graph graph = new Graph();
+//        try (BufferedReader inputReader = new BufferedReader(new FileReader(Paths.get(path).toFile()))) {
+//            for (String line = inputReader.readLine(); line != null; line = inputReader.readLine()) {
+//                if (line.isEmpty() || line.charAt(0) == '#') continue;
+//                System.out.println(line);
+//                addNodesToGraph(graph, parseSubCaseTypes(line.split(">")));
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return graph;
+//    }
 }

@@ -23,12 +23,9 @@ public class GraphTest {
         subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_AGR_D));
 //        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
 //        subCaseList.add(new SubCaseInfo("", SubCaseType.SAPBO_CUST));
-//        SAPBO_CUST > SAPBO_CLIENT > SAPBO_DOCS
-//        SAPBO_CUST > SAPBO_AGR_D
 
         GraphBuilder graphBuilder = new GraphBuilder();
         var graph = graphBuilder.buildFromFile("graphdata");
-
         System.out.println("---------------------------------------------------------");
         graph.getSingleSubCaseTypes(subCaseList).forEach(System.out::println);
 //        System.out.println("---------------------------------------------------------");
