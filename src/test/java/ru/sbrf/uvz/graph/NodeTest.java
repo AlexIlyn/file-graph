@@ -1,6 +1,5 @@
 package ru.sbrf.uvz.graph;
 
-import lombok.var;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
@@ -14,8 +13,8 @@ public class NodeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void addDependent_ThrowIllegalAgrgumentException_SameKey() {
-        var nodeParent = new Node(SubCaseType.DRPA_CUST);
-        var nodeChild = new Node(SubCaseType.DRPA_CUST);
+        Node nodeParent = new Node(SubCaseType.DRPA_CUST);
+        Node nodeChild = new Node(SubCaseType.DRPA_CUST);
         nodeParent.addDependent(nodeChild);
 //        assertThrows(IllegalArgumentException.class,
 //                () -> nodeParent.addDependent(nodeChild));
@@ -26,8 +25,8 @@ public class NodeTest {
 
     @Test
     public void addDependent_ValidEdge() {
-        var nodeParent = new Node(SubCaseType.DRPA_CUST);
-        var nodeChild = new Node(SubCaseType.SAPBO_DOCS);
+        Node nodeParent = new Node(SubCaseType.DRPA_CUST);
+        Node nodeChild = new Node(SubCaseType.SAPBO_DOCS);
         nodeParent.setGraph(graphMock);
         nodeChild.setGraph(graphMock);
         nodeParent.addDependent(nodeChild);
@@ -39,15 +38,15 @@ public class NodeTest {
 
     @Test
     public void equals_ReturnFalse() {
-        var nodeOne = new Node(SubCaseType.DRPA_CUST);
-        var nodeTwo = new Node(SubCaseType.SAPBO_DOCS);
+        Node nodeOne = new Node(SubCaseType.DRPA_CUST);
+        Node nodeTwo = new Node(SubCaseType.SAPBO_DOCS);
         assertFalse(nodeOne.equals(nodeTwo));
     }
 
     @Test
     public void equals_ReturnTrue() {
-        var nodeOne = new Node(SubCaseType.DRPA_CUST);
-        var nodeTwo = new Node(SubCaseType.DRPA_CUST);
+        Node nodeOne = new Node(SubCaseType.DRPA_CUST);
+        Node nodeTwo = new Node(SubCaseType.DRPA_CUST);
         assertTrue(nodeOne.equals(nodeTwo));
     }
 //

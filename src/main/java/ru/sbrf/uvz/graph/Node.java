@@ -2,7 +2,6 @@ package ru.sbrf.uvz.graph;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.var;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ class Node {
     }
 
     boolean isRoot() {
-        for (var edge : neighborhood) {
+        for (Edge edge : neighborhood) {
             if (edge.getEnd() == this) return false;
         }
         return true;

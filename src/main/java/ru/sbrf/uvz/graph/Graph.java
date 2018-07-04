@@ -1,6 +1,5 @@
 package ru.sbrf.uvz.graph;
 
-import lombok.var;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,17 +14,14 @@ public class Graph {
 
     private List<LinkedSubCaseType> getTopNodes(List<SubCaseInfo> subCases) {
         Map<SubCaseType, LinkedSubCaseType> result = new HashMap<>();
-        List<SubCaseInfo> internalList = new ArrayList<>(subCases);
         HashSet<SubCaseType> parsedTypes = new HashSet<>();
         for (SubCaseInfo subCase : subCases) {
-            var node = tryGetNode(subCase.getSubCaseType());
+            Node node = tryGetNode(subCase.getSubCaseType());
             if (node.isRoot() && !result.containsKey(subCase.getSubCaseType())) {
                 result.put(subCase.getSubCaseType(), new LinkedSubCaseType(subCase.getSubCaseType()));
-                internalList = internalList.stream().filter(sc -> sc.getSubCaseType() != subCase.getSubCaseType()).collect(Collectors.toList());
             }
         }
-        internalList = removeCildsFromList(internalList, new ArrayList<>(result.values()));
-        for (SubCaseInfo sc : internalList) {
+        for (SubCaseInfo sc : subCases) {
             if (parsedTypes.contains(sc.getSubCaseType())) continue;
             parsedTypes.add(sc.getSubCaseType());
             boolean typeHaveParentFiles = haveParentFiles(sc.getSubCaseType(), subCases);
@@ -36,31 +32,13 @@ public class Graph {
         return new ArrayList<>(result.values());
     }
 
-    private List<SubCaseInfo> removeCildsFromList(List<SubCaseInfo> subCases, List<LinkedSubCaseType> linkedSubCaseTypes) {
-        var internalList = new ArrayList<SubCaseInfo>(subCases);
-        for (var linkedSubCaseType : linkedSubCaseTypes) {
-            Node currentNode = tryGetNode(linkedSubCaseType.getLinkType());
-            Queue<Node> queue = new LinkedList<>();
-            do {
-                for (SubCaseInfo subCase : subCases) {
-                    if (subCase.getSubCaseType().equals(currentNode.getKey())) {
-                        internalList.remove(subCase);
-                    }
-                }
-                queue.addAll(currentNode.getChildNodes());
-                if (!queue.isEmpty()) currentNode = queue.poll();
-            } while (!queue.isEmpty());
-        }
-        return internalList;
-    }
-
     private boolean haveParentFiles(SubCaseType subCaseType, List<SubCaseInfo> subCases) {
-        var node = tryGetNode(subCaseType);
+        Node node = tryGetNode(subCaseType);
         List<Node> parents = null;
         if (node != null) parents = node.getParentNodes();
         if (node == null || parents.size() == 0) return false;
-        for (var parent_node : parents) {
-            for (var sc : subCases) {
+        for (Node parent_node : parents) {
+            for (SubCaseInfo sc : subCases) {
                 if (sc.getSubCaseType() == parent_node.getKey()) return true;
             }
         }
@@ -73,10 +51,10 @@ public class Graph {
     }
 
     public List<LinkedSubCaseType> getLinkedSubCaseTypes(List<SubCaseInfo> subCases) {
-        var rootLinkedSubCases = getTopNodes(getSubCasesContentInGraph(subCases));
-        var internalSubCasesList = new ArrayList<SubCaseInfo>(subCases);
+        List<LinkedSubCaseType> rootLinkedSubCases = getTopNodes(getSubCasesContentInGraph(subCases));
+        List<SubCaseInfo> internalSubCasesList = new ArrayList<>(subCases);
         for (LinkedSubCaseType rootLinkedSubCase : rootLinkedSubCases) {
-            var tmp = getSubcaseDependentsHorizontal(internalSubCasesList, rootLinkedSubCase);
+            LinkedSubCaseType tmp = getSubcaseDependentsHorizontal(internalSubCasesList, rootLinkedSubCase);
             internalSubCasesList.removeAll(tmp.getSubCaseInfoList());
         }
         return rootLinkedSubCases;
