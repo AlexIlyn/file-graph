@@ -1,6 +1,7 @@
 package ru.sbrf.uvz.graph;
 
 import lombok.var;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class GraphTest {
     @Test
+    @Ignore
     public void TestGetLinkedSubCaseTypes() {
         List<SubCaseInfo> subCaseList = new ArrayList<>();
         subCaseList.add(new SubCaseInfo("", SubCaseType.DRPA_CUST));
