@@ -13,34 +13,30 @@ public class Graph {
         this.nodes = new HashMap<>();
     }
 
-    protected List<LinkedSubCaseType> getTopNodes(List<SubCaseInfo> subCases) {
-        Map<SubCaseType, LinkedSubCaseType> result = new HashMap();
+    private List<LinkedSubCaseType> getTopNodes(List<SubCaseInfo> subCases) {
+        Map<SubCaseType, LinkedSubCaseType> result = new HashMap<>();
         List<SubCaseInfo> internalList = new ArrayList<>(subCases);
-        //System.out.println("[INTERNAL LIST] " + internalList);
         HashSet<SubCaseType> parsedTypes = new HashSet<>();
         for (SubCaseInfo subCase : subCases) {
             var node = tryGetNode(subCase.getSubCaseType());
             if (node.isRoot() && !result.containsKey(subCase.getSubCaseType())) {
                 result.put(subCase.getSubCaseType(), new LinkedSubCaseType(subCase.getSubCaseType()));
                 internalList = internalList.stream().filter(sc -> sc.getSubCaseType() != subCase.getSubCaseType()).collect(Collectors.toList());
-                //System.out.println("[INTERNAL LIST] " + internalList);
             }
         }
-        internalList = removeCildsFromList(internalList, result.values().stream().collect(Collectors.toList()));
+        internalList = removeCildsFromList(internalList, new ArrayList<>(result.values()));
         for (SubCaseInfo sc : internalList) {
             if (parsedTypes.contains(sc.getSubCaseType())) continue;
             parsedTypes.add(sc.getSubCaseType());
             boolean typeHaveParentFiles = haveParentFiles(sc.getSubCaseType(), subCases);
             if (!typeHaveParentFiles && !result.containsKey(sc.getSubCaseType())) {
                 result.put(sc.getSubCaseType(), new LinkedSubCaseType(sc.getSubCaseType()));
-                //internalList = internalList.stream().filter(i -> i.getSubCaseType() != sc.getSubCaseType()).collect(Collectors.toList());
             }
         }
-        //System.out.println("GETTOPNODES##################################\n" + result.values());
         return new ArrayList<>(result.values());
     }
 
-    protected List<SubCaseInfo> removeCildsFromList(List<SubCaseInfo> subCases, List<LinkedSubCaseType> linkedSubCaseTypes) {
+    private List<SubCaseInfo> removeCildsFromList(List<SubCaseInfo> subCases, List<LinkedSubCaseType> linkedSubCaseTypes) {
         var internalList = new ArrayList<SubCaseInfo>(subCases);
         for (var linkedSubCaseType : linkedSubCaseTypes) {
             Node currentNode = tryGetNode(linkedSubCaseType.getLinkType());
@@ -51,10 +47,7 @@ public class Graph {
                         internalList.remove(subCase);
                     }
                 }
-                List<Node> childs = currentNode.getChildNodes();
-                for (var node : childs) {
-                    queue.add(node);
-                }
+                queue.addAll(currentNode.getChildNodes());
                 if (!queue.isEmpty()) currentNode = queue.poll();
             } while (!queue.isEmpty());
         }
@@ -74,7 +67,7 @@ public class Graph {
         return false;
     }
 
-    protected List<SubCaseInfo> getSubCasesContentInGraph(List<SubCaseInfo> subCases) {
+    private List<SubCaseInfo> getSubCasesContentInGraph(List<SubCaseInfo> subCases) {
 
         return subCases.stream().filter(sc -> this.containsNode(sc.getSubCaseType())).collect(Collectors.toList());
     }
@@ -82,8 +75,8 @@ public class Graph {
     public List<LinkedSubCaseType> getLinkedSubCaseTypes(List<SubCaseInfo> subCases) {
         var rootLinkedSubCases = getTopNodes(getSubCasesContentInGraph(subCases));
         var internalSubCasesList = new ArrayList<SubCaseInfo>(subCases);
-        for (int i = 0; i < rootLinkedSubCases.size(); i++) {
-            var tmp = getSubcaseDependentsHorizontal(internalSubCasesList, rootLinkedSubCases.get(i));
+        for (LinkedSubCaseType rootLinkedSubCase : rootLinkedSubCases) {
+            var tmp = getSubcaseDependentsHorizontal(internalSubCasesList, rootLinkedSubCase);
             internalSubCasesList.removeAll(tmp.getSubCaseInfoList());
         }
         return rootLinkedSubCases;
@@ -94,7 +87,7 @@ public class Graph {
         return subCases.stream().filter(sc -> !this.containsNode(sc.getSubCaseType())).collect(Collectors.toList());
     }
 
-    protected LinkedSubCaseType getSubcaseDependentsHorizontal(List<SubCaseInfo> subCases, LinkedSubCaseType linkedSubCaseType) {
+    private LinkedSubCaseType getSubcaseDependentsHorizontal(List<SubCaseInfo> subCases, LinkedSubCaseType linkedSubCaseType) {
         Node currentNode = tryGetNode(linkedSubCaseType.getLinkType());
         Queue<Node> queue = new LinkedList<>();
         do {
@@ -103,20 +96,17 @@ public class Graph {
                     linkedSubCaseType.getSubCaseInfoList().add(subCase);
                 }
             }
-            List<Node> childs = currentNode.getChildNodes();
-            for (var node : childs) {
-                queue.add(node);
-            }
+            queue.addAll(currentNode.getChildNodes());
             if (!queue.isEmpty()) currentNode = queue.poll();
         } while (!queue.isEmpty());
         return linkedSubCaseType;
     }
 
-    public boolean containsNode(SubCaseType subCaseType) {
+    boolean containsNode(SubCaseType subCaseType) {
         return this.nodes.containsKey(subCaseType);
     }
 
-    public Node tryGetNode(SubCaseType subCaseType) {
+    Node tryGetNode(SubCaseType subCaseType) {
         if (!this.nodes.containsKey(subCaseType)) return null;
         return this.nodes.get(subCaseType);
     }
@@ -132,10 +122,10 @@ public class Graph {
     /**
      * This method adds a Node to the graph.     *
      *
-     * @param node
+     * @param node node to add
      * @return true if Node was added to the Graph
      */
-    public boolean addNode(Node node) {
+    boolean addNode(Node node) {
         Node current = this.nodes.get(node.getKey());
         if (current != null || node.getGraph() != null) {
             return false;

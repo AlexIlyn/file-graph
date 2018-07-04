@@ -19,20 +19,17 @@ public class GraphBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        for (Node node : graph.getNodes()) {
-//            System.out.println(node);
-//            for (Edge edge : node.getNeighbors()) {
-//                System.out.println(edge);
-//            }
-//        }
+        for (Node node : graph.getNodes()) {
+            System.out.println(node);
+            node.getNeighbors().forEach(System.out::println);
+        }
         return graph;
     }
 
     private void addNodesToGraph(Graph graph, List<SubCaseType> subCaseTypes) {
         Node parentNode = null;
         Node childNode;
-        for (int i = 0; i < subCaseTypes.size(); i++) {
-            SubCaseType currSubCaseType = subCaseTypes.get(i);
+        for (SubCaseType currSubCaseType : subCaseTypes) {
             if (graph.containsNode(currSubCaseType)) {
                 //System.out.printf("Нода %s найдена в графе.\n", currSubCaseType);
                 if (parentNode == null) {
@@ -62,8 +59,8 @@ public class GraphBuilder {
 
     private List<SubCaseType> parseSubCaseTypes(String[] strings) throws IllegalArgumentException {
         List<SubCaseType> subCaseTypeList = new ArrayList<>();
-        for (int i = 0; i < strings.length; i++) {
-            SubCaseType subCaseType = SubCaseType.valueOf(strings[i].trim());
+        for (String string : strings) {
+            SubCaseType subCaseType = SubCaseType.valueOf(string.trim());
             subCaseTypeList.add(subCaseType);
         }
         return subCaseTypeList;

@@ -31,12 +31,12 @@ public class GraphTest {
 
         System.out.println("---------------------------------------------------------");
         graph.getSingleSubCaseTypes(subCaseList).forEach(System.out::println);
-        System.out.println("---------------------------------------------------------");
-        graph.getSubCasesContentInGraph(subCaseList).forEach(System.out::println);
-        System.out.println("---------------------------------------------------------");
-        graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).forEach(System.out::println);
-        System.out.println("---------------------------------------------------------");
-        System.out.println(graph.getSubcaseDependentsHorizontal(subCaseList, graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).get(0)));
+//        System.out.println("---------------------------------------------------------");
+//        graph.getSubCasesContentInGraph(subCaseList).forEach(System.out::println);
+//        System.out.println("---------------------------------------------------------");
+//        graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).forEach(System.out::println);
+//        System.out.println("---------------------------------------------------------");
+//        System.out.println(graph.getSubcaseDependentsHorizontal(subCaseList, graph.getTopNodes(graph.getSubCasesContentInGraph(subCaseList)).get(0)));
         System.out.println("---------------------------------------------------------");
         graph.getLinkedSubCaseTypes(subCaseList).forEach(System.out::println);
     }

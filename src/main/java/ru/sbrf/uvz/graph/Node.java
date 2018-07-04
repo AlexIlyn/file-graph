@@ -1,5 +1,6 @@
 package ru.sbrf.uvz.graph;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.var;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Node {
+class Node {
 
     private ArrayList<Edge> neighborhood;
     @Getter
@@ -20,19 +21,20 @@ public class Node {
     /**
      * @param key The unique key associated with this Node
      */
-    public Node(SubCaseType key) {
+    Node(@NotNull SubCaseType key) {
         this.key = key;
         this.neighborhood = new ArrayList<>();
     }
 
-    public boolean isRoot() {
+    boolean isRoot() {
         for (var edge : neighborhood) {
             if (edge.getEnd() == this) return false;
         }
         return true;
     }
 
-    public List<Node> getChildNodes() {
+    @NotNull
+    List<Node> getChildNodes() {
         List<Node> result = new ArrayList<>();
         neighborhood.forEach(e -> {
             if (e.getStart() == this) result.add(e.getEnd());
@@ -40,7 +42,7 @@ public class Node {
         return result;
     }
 
-    public List<Node> getParentNodes() {
+    List<Node> getParentNodes() {
         List<Node> result = new ArrayList<>();
         neighborhood.forEach(e -> {
             if (e.getEnd() == this) result.add(e.getStart());
@@ -54,7 +56,7 @@ public class Node {
      *
      * @param child The node to add as dependent
      */
-    public Node addDependent(Node child) {
+    Node addDependent(Node child) {
         if (child.getKey().equals(key)) throw new IllegalArgumentException("Node cant have dependent with same key");
         //if(child.getGraph() != this.getGraph()) throw new IllegalArgumentException("Dependent cant belong to different graph");
         for (Edge edge : neighborhood) {
@@ -84,7 +86,7 @@ public class Node {
      * @return ArrayList<Edge> A copy of this.neighborhood. Modifying the returned
      * ArrayList will not affect the neighborhood of this Node
      */
-    public ArrayList<Edge> getNeighbors() {
+    ArrayList<Edge> getNeighbors() {
         return new ArrayList<>(this.neighborhood);
     }
 
