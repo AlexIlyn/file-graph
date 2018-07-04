@@ -1,6 +1,5 @@
 package ru.sbrf.uvz.graph;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.var;
@@ -21,7 +20,7 @@ class Node {
     /**
      * @param key The unique key associated with this Node
      */
-    Node(@NotNull SubCaseType key) {
+    Node(SubCaseType key) {
         this.key = key;
         this.neighborhood = new ArrayList<>();
     }
@@ -33,7 +32,6 @@ class Node {
         return true;
     }
 
-    @NotNull
     List<Node> getChildNodes() {
         List<Node> result = new ArrayList<>();
         neighborhood.forEach(e -> {
